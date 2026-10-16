@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Accords Atelier — progressions d'accords</title>
+<meta name="description" content="Construisez, écoutez et exportez en MIDI des progressions d'accords, dans le navigateur.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <!-- Logo original : trois barres verticales évoquant un accord -->
+    <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true"><rect x="5" y="10" width="5" height="16" rx="2"/><rect x="13.5" y="5" width="5" height="21" rx="2"/><rect x="22" y="13" width="5" height="13" rx="2"/></svg>
+    <h1 data-i18n="title">Accords Atelier</h1>
+  </div>
+  <label class="lang"><span class="sr" data-i18n="language">Langue</span>
+    <select id="lang">
+      <option value="fr">Français</option>
+      <option value="en">English</option>
+      <option value="kab">Taqbaylit</option>
+    </select>
+  </label>
+</header>
+
+<main>
+  <p class="intro" data-i18n="intro">Choisissez une tonalité et un mode, cliquez sur les accords pour composer une progression, écoutez-la puis exportez-la en MIDI.</p>
+
+  <section class="panel controls" aria-labelledby="h-settings">
+    <h2 id="h-settings" data-i18n="settings">Réglages</h2>
+    <div class="grid">
+      <label><span data-i18n="key">Tonalité</span><select id="key"></select></label>
+      <label><span data-i18n="mode">Mode</span><select id="mode"></select></label>
+      <label><span data-i18n="type">Type d'accord</span>
+        <select id="ctype">
+          <option value="3" data-i18n="triads">Triades</option>
+          <option value="4" data-i18n="sevenths">Septièmes</option>
+        </select></label>
+      <label><span data-i18n="tempo">Tempo (BPM)</span><input id="tempo" type="number" min="40" max="220" value="90"></label>
+      <label><span data-i18n="beats">Temps par accord</span>
+        <select id="beats"><option>1</option><option>2</option><option selected>4</option><option>8</option></select></label>
+      <label><span data-i18n="sound">Son</span>
+        <select id="sound">
+          <option value="pad" data-i18n="pad">Nappe douce</option>
+          <option value="keys" data-i18n="keys">Clavier</option>
+          <option value="pluck" data-i18n="pluck">Pincé</option>
+        </select></label>
+      <label class="check"><input id="arp" type="checkbox"> <span data-i18n="arp">Arpège</span></label>
+      <label class="check"><input id="loop" type="checkbox" checked> <span data-i18n="loop">Boucle</span></label>
+    </div>
+  </section>
+
+  <section class="panel" aria-labelledby="h-chords">
+    <h2 id="h-chords" data-i18n="chords">Accords de la gamme</h2>
+    <div id="palette" class="palette"></div>
+    <div class="presets">
+      <span data-i18n="presets">Progressions célèbres :</span>
+      <div id="presets"></div>
+    </div>
+  </section>
+
+  <section class="panel" aria-labelledby="h-prog">
+    <h2 id="h-prog" data-i18n="progression">Progression</h2>
+    <ol id="prog" class="prog" aria-live="polite"></ol>
+    <p id="empty" class="hint" data-i18n="empty">Cliquez sur un accord ci-dessus pour l'ajouter.</p>
+    <div class="actions">
+      <button id="play" class="primary" data-i18n="play">▶ Lire</button>
+      <button id="stop" data-i18n="stop">■ Stop</button>
+      <button id="undo" data-i18n="undo">↶ Retirer le dernier</button>
+      <button id="clear" data-i18n="clear">Effacer</button>
+      <button id="transpose-down" title="-1">♭ −1</button>
+      <button id="transpose-up" title="+1">♯ +1</button>
+      <button id="midi" data-i18n="midi">⬇ Export MIDI</button>
+      <button id="txt" data-i18n="txt">⬇ Export texte</button>
+      <button id="share" data-i18n="share">🔗 Copier le lien</button>
+    </div>
+    <p id="status" class="status" role="status"></p>
+  </section>
+
+  <section class="panel" aria-labelledby="h-piano">
+    <h2 id="h-piano" data-i18n="piano">Clavier</h2>
+    <p id="current" class="current">—</p>
+    <div id="piano" class="piano" aria-hidden="true"></div>
+  </section>
+</main>
+
+<footer>
+  <p><span data-i18n="footer">100 % navigateur, aucune donnée envoyée. Licence MIT.</span>
+  <a href="https://github.com/salimadour31-boop/accords-atelier">GitHub</a></p>
+</footer>
+<script src="i18n.js"></script>
+<script src="theory.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+/* Accords Atelier — styles. Palette originale, encre nuit + accent ambre. */
+:root{--bg:#12131a;--panel:#1b1d27;--line:#2c2f3d;--ink:#ecebf2;--muted:#9a9cb0;--accent:#f2a93b;--accent2:#5fc2b5;--r:12px}
+*{box-sizing:border-box}
+body{margin:0;font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+.top{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid var(--line);gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px}
+.brand svg{fill:var(--accent)}
+h1{font-size:1.3rem;margin:0}
+h2{font-size:1rem;margin:0 0 12px;color:var(--accent);text-transform:uppercase;letter-spacing:.06em}
+main{max-width:1000px;margin:0 auto;padding:16px}
+.intro{color:var(--muted);margin:4px 0 16px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;align-items:end}
+label{display:flex;flex-direction:column;gap:4px;font-size:.85rem;color:var(--muted)}
+label.check{flex-direction:row;align-items:center;gap:8px;color:var(--ink)}
+select,input[type=number],button{font:inherit;color:var(--ink);background:#252836;border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+button{cursor:pointer}
+button:hover,select:hover{border-color:var(--accent)}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outline-offset:2px}
+button.primary{background:var(--accent);color:#1a1205;border-color:var(--accent);font-weight:600}
+.palette{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px}
+.chord{display:flex;flex-direction:column;align-items:center;padding:12px 6px;border-radius:10px;background:#232634;border:1px solid var(--line)}
+.chord .rn{font-size:.8rem;color:var(--accent2);font-weight:600}
+.chord .nm{font-size:1.25rem;font-weight:700}
+.chord .fn{font-size:.72rem;color:var(--muted)}
+.chord:hover{transform:translateY(-1px)}
+.presets{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;color:var(--muted);font-size:.85rem}
+.presets div{display:flex;flex-wrap:wrap;gap:6px}
+.presets button{font-size:.8rem;padding:5px 9px}
+.prog{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.prog li{display:flex;align-items:center;gap:6px;padding:8px 10px;background:#232634;border:1px solid var(--line);border-radius:10px}
+.prog li.on{border-color:var(--accent);box-shadow:0 0 0 2px rgba(242,169,59,.35)}
+.prog li b{font-size:1.05rem}
+.prog li small{color:var(--accent2)}
+.prog li button{padding:0 6px;border:none;background:none;color:var(--muted);font-size:1rem}
+.hint{color:var(--muted);font-size:.9rem}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.status{min-height:1.4em;color:var(--accent2);font-size:.9rem}
+.current{font-size:1.1rem;font-weight:600;margin:0 0 10px}
+/* Clavier : deux octaves dessinées en CSS */
+.piano{position:relative;height:120px;display:flex;user-select:none;overflow:hidden;border-radius:8px}
+.piano .w{flex:1;background:#f4f2ea;border:1px solid #888;border-radius:0 0 6px 6px;position:relative}
+.piano .b{position:absolute;top:0;height:62%;background:#1a1a1f;border-radius:0 0 4px 4px;z-index:2}
+.piano .on{background:var(--accent)!important}
+.piano .w.on{background:#f7c879!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+footer{text-align:center;color:var(--muted);font-size:.85rem;padding:20px}
+footer a{color:var(--accent2)}
+@media (max-width:560px){
+  main{padding:10px}.panel{padding:12px}
+  .palette{grid-template-columns:repeat(auto-fill,minmax(84px,1fr))}
+  .chord .nm{font-size:1.05rem}
+  .piano{height:90px}
+}
