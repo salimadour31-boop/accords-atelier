@@ -81,4 +81,4 @@
 
   g.Theory = {MODES:MODES, QUAL:QUAL, useFlats:useFlats, noteName:noteName,
     diatonic:diatonic, roman:roman, chordName:chordName, voicing:voicing};
-})(window);
+})(typeof window !== "undefined" ? window : globalThis);

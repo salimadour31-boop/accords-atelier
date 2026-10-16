@@ -28,6 +28,8 @@
     var p = S.prog.map(function (c) { return c.r + '.' + c.q; }).join(',');
     var h = 'l=' + S.lang + '&k=' + S.key + '&m=' + S.mode + '&s=' + S.size + '&b=' + S.bpm + '&n=' + S.beats + '&p=' + p;
     try { history.replaceState(null, '', '#' + h); } catch (e) {}
+    // prévient le studio multipiste qu'il doit se resynchroniser
+    try { document.dispatchEvent(new CustomEvent('aa:change')); } catch (e) {}
   }
   function loadHash() {
     var h = location.hash.replace(/^#/, ''); if (!h) return;
@@ -245,7 +247,7 @@
 
   // ---------- Événements ----------
   function bind() {
-    $('lang').onchange = function () { S.lang = this.value; try { localStorage.setItem('aa-lang', S.lang); } catch (e) {} saveHash(); applyLang(); };
+    $('lang').onchange = function () { S.lang = this.value; try { localStorage.setItem('aa-lang', S.lang); } catch (e) {} applyLang(); saveHash(); };
     $('key').onchange = function () { var n = (+this.value - S.key + 12) % 12; S.key = +this.value; S.prog.forEach(function (c) { c.r = (c.r + n) % 12; }); renderAll(); saveHash(); };
     $('mode').onchange = function () { S.mode = this.value; renderAll(); saveHash(); };
     $('ctype').onchange = function () { S.size = +this.value; renderPalette(); saveHash(); };
@@ -280,5 +282,7 @@
   loadHash(); $('lang').value = S.lang;
   buildPiano(); bind(); applyLang();
   if (S.prog.length) lightKeys(S.prog[0].r, S.prog[0].q);
-  window.__AA = {S:S, buildMidi:buildMidi, loadPreset:function (i) { loadPreset(PRESETS[i]); }}; // pour les tests
+  // API utilisée par studio.js et par les tests
+  window.__AA = {S:S, buildMidi:buildMidi, t:t, flats:flats, loadPreset:function (i) { loadPreset(PRESETS[i]); },
+    refresh:function () { fillSelects(); renderAll(); saveHash(); }, stopPreview:stop};
 })();
