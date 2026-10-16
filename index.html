@@ -6,6 +6,7 @@
 <title>Accords Atelier — progressions d'accords</title>
 <meta name="description" content="Construisez, écoutez et exportez en MIDI des progressions d'accords, dans le navigateur.">
 <link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect x=%275%27 y=%2710%27 width=%275%27 height=%2716%27 fill=%27%23f2a93b%27/%3E%3Crect x=%2713.5%27 y=%275%27 width=%275%27 height=%2721%27 fill=%27%23f2a93b%27/%3E%3Crect x=%2722%27 y=%2713%27 width=%275%27 height=%2713%27 fill=%27%23f2a93b%27/%3E%3C/svg%3E">
 </head>
 <body>
 <header class="top">
@@ -77,6 +78,78 @@
     <p id="status" class="status" role="status"></p>
   </section>
 
+
+  <!-- ===================== v2 : Mélodie (import / analyse / génération) ===================== -->
+  <section class="panel" aria-labelledby="h-melody" id="melody-panel">
+    <h2 id="h-melody" data-i18n="melody">Mélodie</h2>
+    <p class="hint" data-i18n="melodyIntro">Importez votre mélodie (MIDI ou audio) pour l'harmoniser, ou générez-en une sur la progression.</p>
+    <div class="mel-grid">
+      <div class="sub">
+        <h3 data-i18n="importTitle">Importer</h3>
+        <label class="file"><span data-i18n="importMidi">Fichier MIDI (.mid)</span><input id="f-midi" type="file" accept=".mid,.midi,audio/midi"></label>
+        <label id="midi-track-wrap" hidden><span data-i18n="midiTrack">Piste MIDI</span><select id="midi-track"></select></label>
+        <label class="file"><span data-i18n="importAudio">Fichier audio (WAV/MP3)</span><input id="f-audio" type="file" accept="audio/*,.wav,.mp3,.ogg"></label>
+        <div class="row">
+          <button id="tap" type="button" data-i18n="tap">Taper le tempo</button>
+          <button id="auto-bpm" type="button" data-i18n="autoBpm">BPM auto</button>
+        </div>
+        <label><span data-i18n="offset">Décalage (ms)</span><input id="offset" type="number" step="10" value="0"></label>
+        <p id="analysis" class="analysis" aria-live="polite"></p>
+        <div class="row">
+          <button id="harmonize" type="button" class="primary" data-i18n="harmonize">Harmoniser la mélodie</button>
+          <button id="apply-key" type="button" data-i18n="applyKey">Appliquer la tonalité</button>
+        </div>
+      </div>
+      <div class="sub">
+        <h3 data-i18n="genTitle">Générer</h3>
+        <div class="grid g2">
+          <label><span data-i18n="style">Style</span><select id="g-style">
+            <option value="lyrical" data-i18n="st_lyrical">Lyrique</option><option value="pop" data-i18n="st_pop" selected>Pop</option><option value="arp" data-i18n="st_arp">Arpèges</option></select></label>
+          <label><span data-i18n="density">Densité</span><select id="g-density">
+            <option value="sparse" data-i18n="d_sparse">Aérée</option><option value="medium" data-i18n="d_medium" selected>Moyenne</option><option value="dense" data-i18n="d_dense">Dense</option></select></label>
+          <label><span data-i18n="range">Tessiture</span><select id="g-range">
+            <option value="low" data-i18n="r_low">Grave</option><option value="mid" data-i18n="r_mid" selected>Médium</option><option value="high" data-i18n="r_high">Aiguë</option></select></label>
+          <label><span data-i18n="seed">Graine</span><input id="g-seed" type="number" min="1" max="999999" value="1"></label>
+        </div>
+        <div class="row">
+          <button id="gen" type="button" class="primary" data-i18n="generate">Générer une mélodie</button>
+          <button id="reseed" type="button" data-i18n="reseed">🎲 Nouvelle graine</button>
+          <button id="vary" type="button" data-i18n="vary">Variation</button>
+          <button id="clear-mel" type="button" data-i18n="clearMel">Retirer la mélodie</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== v2 : Studio multipiste ===================== -->
+  <section class="panel" aria-labelledby="h-studio" id="studio">
+    <h2 id="h-studio" data-i18n="studio">Studio multipiste</h2>
+    <div class="transport">
+      <button id="s-play" type="button" class="primary" data-i18n="play">▶ Lire</button>
+      <button id="s-stop" type="button" data-i18n="stop">■ Stop</button>
+      <label class="check"><input id="s-loop" type="checkbox" checked> <span data-i18n="loop">Boucle</span></label>
+      <label class="check"><input id="s-metro" type="checkbox"> <span data-i18n="metronome">Métronome</span></label>
+      <label class="inline"><span data-i18n="tempo">Tempo (BPM)</span><input id="s-bpm" type="number" min="40" max="220" value="90"></label>
+      <span id="s-pos" class="pos">1.1</span>
+    </div>
+    <div id="tracks" class="tracks"></div>
+    <div class="master">
+      <b data-i18n="master">Master</b>
+      <label class="inline"><span data-i18n="volume">Volume</span><input id="m-vol" type="range" min="0" max="1.2" step="0.01" value="0.9"></label>
+      <label class="check"><input id="m-lim" type="checkbox" checked> <span data-i18n="limiter">Limiteur</span></label>
+      <label class="inline"><span data-i18n="reverb">Réverb</span><input id="m-rev" type="range" min="0.5" max="4" step="0.1" value="2"></label>
+      <span id="meter" class="meter"><i></i></span>
+    </div>
+    <div class="actions">
+      <button id="x-wav" type="button" data-i18n="exWav">⬇ Mixage WAV</button>
+      <button id="x-stems" type="button" data-i18n="exStems">⬇ Pistes séparées (WAV)</button>
+      <button id="x-midi" type="button" data-i18n="exMidi">⬇ MIDI multipiste</button>
+      <button id="x-json" type="button" data-i18n="exJson">⬇ Projet JSON</button>
+      <label class="file btnlike"><span data-i18n="imJson">⬆ Ouvrir un projet</span><input id="f-json" type="file" accept=".json,application/json"></label>
+    </div>
+    <p id="s-status" class="status" role="status"></p>
+  </section>
+
   <section class="panel" aria-labelledby="h-piano">
     <h2 id="h-piano" data-i18n="piano">Clavier</h2>
     <p id="current" class="current">—</p>
@@ -91,5 +164,7 @@
 <script src="i18n.js"></script>
 <script src="theory.js"></script>
 <script src="app.js"></script>
+<script src="core.js"></script>
+<script src="studio.js"></script>
 </body>
 </html>
